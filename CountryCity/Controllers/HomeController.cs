@@ -38,7 +38,13 @@ namespace CountryCity.Controllers
         IMemoryCache _memoryCache;
 
        
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userManager">qqq</param>
+        /// <param name="signInManager">qqq</param>
+        /// <param name="logger"></param>
+        /// <param name="memoryCache"></param>
 
         public HomeController(UserManager<AppUser> userManager,SignInManager<AppUser> signInManager,ILogger<HomeController> logger,IMemoryCache memoryCache)
         {
