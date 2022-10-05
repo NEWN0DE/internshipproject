@@ -16,8 +16,6 @@ namespace CountryCity.Controllers
     {        
       
         //UserManager Sınıfı kullanıcı yönetiminin ana karargahıdır.
-        //Deneme
-        //Deneme2
 
         readonly UserManager<AppUser> _userManager;
 
