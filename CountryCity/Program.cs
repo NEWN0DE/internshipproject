@@ -1,6 +1,7 @@
 using CountryCity.Context;
 using CountryCity.CustomValidations;
 using CountryCity.Models;
+using CountryCity.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,22 +31,25 @@ var configurationOptions = new ConfigurationOptions
     // ConfigurationChannel = "tesr",
     //ChannelPrefix = "MR",
     AllowAdmin = true,
-    DefaultDatabase = 1
+    DefaultDatabase = 2
 
 };
 
 
 builder.Services.AddStackExchangeRedisCache(redis =>
 {
- //   redis.Configuration = builder.Configuration.GetConnectionString("Redis");
- redis.ConfigurationOptions = configurationOptions;
+  // redis.Configuration = builder.Configuration.GetConnectionString("Redis");
+   redis.ConfigurationOptions = configurationOptions;
 });
 
 
 
 
 
-builder.Services.AddSingleton<RedisService, RedisService>();//dependencyinjection provider'ına singleton olarak tek bir nesne olarak ekleyip 
+builder.Services.AddSingleton<ICacheManager,RedisService>();//dependencyinjection provider'ına singleton olarak tek bir nesne olarak ekleyip 
+
+
+
 
 //var configurationOptions = new ConfigurationOptions
 //{
@@ -161,7 +165,7 @@ app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Redis}/{action=CacheString}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 
 app.Run();

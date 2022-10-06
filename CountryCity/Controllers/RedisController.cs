@@ -1,4 +1,6 @@
-﻿using CountryCity.Models;
+﻿using CountryCity.Context;
+using CountryCity.Models;
+using CountryCity.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Caching.Distributed;
@@ -17,90 +19,77 @@ namespace CountryCity.Controllers
 
         RedisService _redisService;
 
-        public RedisController(IDistributedCache distributedCache, RedisService redisService)
+        ICacheManager _cacheManager;
+
+        CountryContext _countryContext;
+
+        public void SettCache<T>(string key,T model)
         {
-            this._distributedCache = distributedCache;
-            this._redisService = redisService;
+            //string key = "Country";
+
+            //var values = _countryContext.Countries.ToList();
+
+            //_cacheManager.Set<List<Country>>(key, values);
+
+            //return View();
+
         }
 
-        public IActionResult Index()
+        public RedisController(IDistributedCache distributedCache, ICacheManager cacheManager,CountryContext countryContext)
         {
-
-            return View();
-        }
-
-        public IActionResult CacheString() 
-        {
-            const string data = "333";
-            //_distributedCache.SetString("01",data ,new DistributedCacheEntryOptions
-            //{
-            //    AbsoluteExpiration = DateTime.Now.AddSeconds(1200),
-            //    SlidingExpiration = TimeSpan.FromSeconds(60)
-
-            //}); //Metinsel tarzda key-value tarzında veri depolamasını gerçekleştirne metotottur.
-
-             _distributedCache.SetString("333", data);
-          //var A =  _distributedCache.GetString("42");
-            
-            return View();
-            
-        }
-
-        public IActionResult CacheGetString() //Metinsel türde depolanmış veriden key değerine karşılık geleni 
-        {//döndüren fonksiyondur.
-            string value = _distributedCache.GetString("07");
-            return View();
-        }
-
-        public IActionResult CacheRemove()  //Key Değeri verilen datayı siler.
-        {
-            _distributedCache.Remove("date");  //ilgili View'i silen metot'tur.
-            return View();
-        }
-
-
-
-        public IActionResult CacheSetBinary() //Cache’de binary olarak data tutmamızı sağlayan fonksiyondur.
-        {
-            byte[] dateByte = Encoding.UTF8.GetBytes(DateTime.Now.ToString());
-            _distributedCache.Set("date", dateByte, new DistributedCacheEntryOptions
-            {
-                AbsoluteExpiration = DateTime.Now.AddSeconds(1200),
-                SlidingExpiration = TimeSpan.FromSeconds(60)
-            });
-            return View();
-        }
-
-        public IActionResult CacheGetBinary()  //Binary olarak tutulan datayı geri binary olarak elde etmemizi sağlayan fonksiyondur.
-        {
-            byte[] dateByte = _distributedCache.Get("date");
-            string value = Encoding.UTF8.GetString(dateByte);
-            return View();
-        }
-
-
-        public IActionResult CacheFile()  //Resim Dosyası Cacheleme.
-        {
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/resim.jpg");
-            byte[] fileByte = System.IO.File.ReadAllBytes(path);
-            _distributedCache.Set("file", fileByte);
-            return View();
-        }
-
-        public IActionResult CacheFileRead()
-        {
-            byte[] fileByte = _distributedCache.Get("file");
-            return File(fileByte, "image/jpg");
-        }
-
-
-
-        //Bu noktaya Kadar esas Redis veri türlerine çok temas etmedik.
-        //şimdi de StackExchange.Redis ile datalarımızı Redis türlerinde tutarak Redis’i daha hakim nasıl kullanacağımızı inceleyeceğiz.
-               
+            _distributedCache = distributedCache;
+            _cacheManager = cacheManager;
+            _countryContext = countryContext;
+        }           
 
        
-        
+
+        public IActionResult Page4()
+        {
+            var values = _cacheManager.Get<List<Country>>("Country");  //Get Cache
+
+            return View(values);
+        }        
+                          
+
+        public IActionResult SetCache()
+        {
+            string key = "Country";            
+
+            var values = _countryContext.Countries.ToList();         
+
+            _cacheManager.Set<List<Country>>(key,values);
+
+            return View();
+        }
+       
+
+        public IActionResult Remove()  //Key Değeri verilen datayı siler.
+        {
+            _cacheManager.Remove("Country");
+
+            return View();
+           
+        }
+
+        //public IActionResult ClearDataBase()
+        //{
+        //    _cacheManager.Clear();
+
+        //    return View();
+
+        //}
+
+        //public IActionResult Contain()
+        //{
+        //    _cacheManager.Contains("Country");
+
+        //    return View();
+        //}
+
+
+
+
 
     }
 }
