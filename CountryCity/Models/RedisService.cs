@@ -4,12 +4,16 @@
 
     public class RedisService 
     {
+
+
         ConnectionMultiplexer connectionMultiplexer;
-        public void Connect() => connectionMultiplexer = ConnectionMultiplexer.Connect("localhost:1453"); //Redis sunucusuna bağlantı gerçekleştiriyoruz.
-        public IDatabase GetDb(int db)
-        {
-            return connectionMultiplexer.GetDatabase(db);
-        }  //Redis VeriTabanları.
+
+
+     //   public void Connect() => connectionMultiplexer = ConnectionMultiplexer.Connect("localhost"); //Redis sunucusuna bağlantı gerçekleştiriyoruz.
+        //public IDatabase GetDb(int db)
+        //{
+        //    return connectionMultiplexer.GetDatabase(db);
+        //}  //Redis VeriTabanları.
 
 
         //Burada Connect metodu içerisinde 'ConnectionMultiplexer' sınıfıyla Redis sunucusuna bağlantı gerçekleştirilmekte 

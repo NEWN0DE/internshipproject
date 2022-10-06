@@ -1,5 +1,6 @@
 ﻿using CountryCity.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Text;
 
@@ -11,7 +12,8 @@ namespace CountryCity.Controllers
 
         //Bu class'ta Redis ile alakalı işlemler gerçekleştirilecektir.
 
-        IDistributedCache _distributedCache;
+        IDistributedCache _distributedCache; //Dependency Injection'dan Servisimizi Talep Ediyoruz.
+
 
         RedisService _redisService;
 
@@ -29,18 +31,24 @@ namespace CountryCity.Controllers
 
         public IActionResult CacheString() 
         {
-            _distributedCache.SetString("date", DateTime.Now.ToString(), new DistributedCacheEntryOptions
-            {
-                AbsoluteExpiration = DateTime.Now.AddSeconds(1200),
-                SlidingExpiration = TimeSpan.FromSeconds(60)
+            const string data = "333";
+            //_distributedCache.SetString("01",data ,new DistributedCacheEntryOptions
+            //{
+            //    AbsoluteExpiration = DateTime.Now.AddSeconds(1200),
+            //    SlidingExpiration = TimeSpan.FromSeconds(60)
 
-            }); //Metinsel tarzda key-value tarzında veri depolamasını gerçekleştirne metotottur.
+            //}); //Metinsel tarzda key-value tarzında veri depolamasını gerçekleştirne metotottur.
+
+             _distributedCache.SetString("333", data);
+          //var A =  _distributedCache.GetString("42");
+            
             return View();
+            
         }
 
         public IActionResult CacheGetString() //Metinsel türde depolanmış veriden key değerine karşılık geleni 
         {//döndüren fonksiyondur.
-            string value = _distributedCache.GetString("date");
+            string value = _distributedCache.GetString("07");
             return View();
         }
 
@@ -85,11 +93,11 @@ namespace CountryCity.Controllers
             return File(fileByte, "image/jpg");
         }
 
-        //Bunoktaya Kadar esas Redis veri türlerine çok temas etmedik.
+
+
+        //Bu noktaya Kadar esas Redis veri türlerine çok temas etmedik.
         //şimdi de StackExchange.Redis ile datalarımızı Redis türlerinde tutarak Redis’i daha hakim nasıl kullanacağımızı inceleyeceğiz.
-
-
-       
+               
 
        
         

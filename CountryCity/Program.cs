@@ -4,6 +4,7 @@ using CountryCity.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using StackExchange.Redis;
 using System;
 using System.Configuration;
@@ -20,18 +21,48 @@ builder.Services.AddLogging();
 
 builder.Services.AddMemoryCache();
 
+var configurationOptions = new ConfigurationOptions
+{
+
+    EndPoints = { "127.0.0.1:6379" },
+    //Password = "xxxxxxxxxxxxxxxxxxx",
+    // Ssl = true,
+    // ConfigurationChannel = "tesr",
+    //ChannelPrefix = "MR",
+    AllowAdmin = true,
+    DefaultDatabase = 1
+
+};
+
+
 builder.Services.AddStackExchangeRedisCache(redis =>
 {
-    redis.Configuration = builder.Configuration.GetConnectionString("Redis");
+ //   redis.Configuration = builder.Configuration.GetConnectionString("Redis");
+ redis.ConfigurationOptions = configurationOptions;
 });
 
+
+
+
+
 builder.Services.AddSingleton<RedisService, RedisService>();//dependencyinjection provider'ına singleton olarak tek bir nesne olarak ekleyip 
-                                                            //tekbir nesne olarak yönetebilirz.
+
+//var configurationOptions = new ConfigurationOptions
+//{
+   
+//     EndPoints = { "127.0.0.1:6379" },
+//    //Password = "xxxxxxxxxxxxxxxxxxx",
+//   // Ssl = true,
+//   // ConfigurationChannel = "tesr",
+//    //ChannelPrefix = "MR",
+//    AllowAdmin = true,
+    
+//};                                                         //tekbir nesne olarak yönetebilirz.
 
 
+//var multiplexer = ConnectionMultiplexer.Connect(configurationOptions);
 
-
-
+//multiplexer.GetDatabase(7);
 
 
 
@@ -130,7 +161,7 @@ app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Redis}/{action=CacheString}/{id?}");
 
 
 app.Run();
