@@ -1,9 +1,11 @@
 using CountryCity.Context;
 using CountryCity.CustomValidations;
 using CountryCity.Models;
+using CountryCity.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using StackExchange.Redis;
 using System;
 using System.Configuration;
@@ -20,18 +22,51 @@ builder.Services.AddLogging();
 
 builder.Services.AddMemoryCache();
 
+var configurationOptions = new ConfigurationOptions
+{
+
+    EndPoints = { "127.0.0.1:6379" },
+    //Password = "xxxxxxxxxxxxxxxxxxx",
+    // Ssl = true,
+    // ConfigurationChannel = "tesr",
+    //ChannelPrefix = "MR",
+    AllowAdmin = true,
+    DefaultDatabase = 2
+
+};
+
+
 builder.Services.AddStackExchangeRedisCache(redis =>
 {
-    redis.Configuration = builder.Configuration.GetConnectionString("Redis");
+  // redis.Configuration = builder.Configuration.GetConnectionString("Redis");
+   redis.ConfigurationOptions = configurationOptions;
 });
 
-builder.Services.AddSingleton<RedisService, RedisService>();//dependencyinjection provider'ına singleton olarak tek bir nesne olarak ekleyip 
-                                                            //tekbir nesne olarak yönetebilirz.
 
 
 
 
+builder.Services.AddSingleton<ICacheManager,RedisService>();//dependencyinjection provider'ına singleton olarak tek bir nesne olarak ekleyip 
 
+
+
+
+//var configurationOptions = new ConfigurationOptions
+//{
+   
+//     EndPoints = { "127.0.0.1:6379" },
+//    //Password = "xxxxxxxxxxxxxxxxxxx",
+//   // Ssl = true,
+//   // ConfigurationChannel = "tesr",
+//    //ChannelPrefix = "MR",
+//    AllowAdmin = true,
+    
+//};                                                         //tekbir nesne olarak yönetebilirz.
+
+
+//var multiplexer = ConnectionMultiplexer.Connect(configurationOptions);
+
+//multiplexer.GetDatabase(7);
 
 
 

@@ -58,7 +58,7 @@ namespace CountryCity.Controllers
 
         [Authorize(Roles = "Editor")]
         public IActionResult Page2()
-        {
+        {            
 
             
             return View();
