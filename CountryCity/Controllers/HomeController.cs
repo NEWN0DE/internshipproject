@@ -1,4 +1,5 @@
-﻿using CountryCity.Models;
+﻿using AutoMapper;
+using CountryCity.Models;
 using CountryCity.Models.ViewModel;
 using CountryCity.ViewModel;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using NuGet.Configuration;
+using System.Reflection;
 
 namespace CountryCity.Controllers
 {
@@ -37,17 +39,9 @@ namespace CountryCity.Controllers
 
         IMemoryCache _memoryCache;
 
-        //Deneme
-       
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="userManager">qqq</param>
-        /// <param name="signInManager">qqq</param>
-        /// <param name="logger"></param>
-        /// <param name="memoryCache"></param>
+        IMapper _mapper;
 
-        public HomeController(UserManager<AppUser> userManager,SignInManager<AppUser> signInManager,ILogger<HomeController> logger,IMemoryCache memoryCache)
+        public HomeController(UserManager<AppUser> userManager,SignInManager<AppUser> signInManager,ILogger<HomeController> logger,IMemoryCache memoryCache,IMapper mapper)
         {
             this._userManager = userManager;
 
@@ -57,7 +51,7 @@ namespace CountryCity.Controllers
 
             this._memoryCache = memoryCache;
             
-            
+            this._mapper = mapper;
 
         }
 
@@ -81,6 +75,7 @@ namespace CountryCity.Controllers
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             logger.LogDebug("aydos");
+
             if (ModelState.IsValid)
             {
                 
@@ -107,7 +102,9 @@ namespace CountryCity.Controllers
                     ModelState.AddModelError("NotUser2", "E-posta veya şifre yanlış.");
                 }
             }
+
             return View(model);
+
         }
 
         public async Task<IActionResult> LogOut()
@@ -137,13 +134,23 @@ namespace CountryCity.Controllers
             
             if (ModelState.IsValid)
             {
-                AppUser appUser = new AppUser
-                {
-                    UserName = appUserViewModel.UserName,
-                    Email = appUserViewModel.Email
-                };
 
-               
+                AppUser appUser = _mapper.Map<AppUser>(appUserViewModel);
+
+                //Context üzerinden gerçek entity ile temas kurulabileceğinden dolayı viewmodelde
+                //ki verileri gerçek modele yani entitye aktarmamız gerekmektedir.İşte bu işlemi
+                //AutoMapper bizler yerine otomatik bir şekilde gerçekleştirmektedir.
+
+
+                //AppUser appUser2 = new AppUser
+                //{
+                //    UserName = appUserViewModel.UserName,
+                //    Email = appUserViewModel.Email,                    
+                    
+                //};
+                ////Automapper kullanmassak bu şekilde yapacağız.
+
+
 
                 //Burada dikkat edilmesi gereken post neticesinde gelen viewmodel içerisindeki password property'si
                 //"CreateAsync" icerisinde ikinci parametreye verilerek ilgili parola'nın Hash algoritması ile şifre
@@ -157,10 +164,10 @@ namespace CountryCity.Controllers
                 if (result.Succeeded)
                     return RedirectToAction("Index");
                 else
-                   result.Errors.ToList().ForEach(e => ModelState.AddModelError(e.Code, e.Description)); //-->tüm hatlar modelstate nesnesine eklenmiştir.
-                   //IdentityResult nesnesinde gelen Errors proporty'sindeki tüm hatalar. 
-                   //ModelState nesnesine AddModelError metoduyla eklenmiştir.
-                   //kullanıcı girmiş olduğu tüm hatalı şifreler yüzenden bilgilendirilecektir.                
+                    result.Errors.ToList().ForEach(e => ModelState.AddModelError(e.Code, e.Description)); //-->tüm hatlar modelstate nesnesine eklenmiştir.
+                                                                                                          //IdentityResult nesnesinde gelen Errors proporty'sindeki tüm hatalar. 
+                                                                                                          //ModelState nesnesine AddModelError metoduyla eklenmiştir.
+                                                                                                          //kullanıcı girmiş olduğu tüm hatalı şifreler yüzenden bilgilendirilecektir.                
 
                 //varsayılan password validasyonlarına uygun olmayan sifreler girildigi taktirde "IdentityResult" bizlere hangi validasyonlar
                 //olduguna dair "Errors" property'si ile bilgi verecektir. Bunu da "ModelState" nesnesine yukleyerek son kullaniciya hata 

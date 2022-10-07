@@ -1,4 +1,5 @@
-﻿using CountryCity.Context;
+﻿using AutoMapper;
+using CountryCity.Context;
 using CountryCity.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,16 +11,20 @@ namespace CountryCity.Controllers
     public class PagesController : Controller
     {
 
-        IMemoryCache _memoryCache;
+        readonly IMemoryCache _memoryCache;
 
-        CountryContext _countryContext;
+        readonly CountryContext _countryContext;
 
-        public PagesController(IMemoryCache memoryCache,CountryContext countryContext)
+
+
+
+        public PagesController(IMemoryCache memoryCache,CountryContext countryContext,IMapper mapper)
         {
             this._memoryCache = memoryCache;
 
             this._countryContext = countryContext;
 
+           
            
         }
 

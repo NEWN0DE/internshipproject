@@ -22,6 +22,8 @@ builder.Services.AddLogging();
 
 builder.Services.AddMemoryCache();
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 var configurationOptions = new ConfigurationOptions
 {
 
