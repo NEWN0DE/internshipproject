@@ -1,0 +1,40 @@
+﻿
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AddCountry</title>
+</head>
+<body>
+    
+<form asp-action="AddCountry" asp-controller="Country" method="post" class="accept-policy">
+
+    <input type="text" class="accept-policy"  name="CountryName" placeholder="Country Name" />
+    <br />
+    <input type="text" class="accept-policy" name="Capital" placeholder="Capital" />
+    <br />
+    <input type="text" class="accept-policy" name="Population" placeholder="Population" />
+    <br />   
+
+    <button class="accept-policy">ADD</button>
+    
+
+</form>
+
+</body>
+</html>
+
+
+
+
+
+
+

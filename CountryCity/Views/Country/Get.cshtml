@@ -1,0 +1,44 @@
+﻿@using CountryCity.Models.MongoDB;
+@model List<CountryMongoDB>;
+
+
+@{
+	ViewData["Title"] = "Get";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table class="table">
+	<thead>
+		<tr>
+			<td>CountryName</td>
+			<td>Capital</td>
+			<td>Population</td>
+			
+			<td>Update</td>
+			<td>Delete</td>
+		</tr>
+
+	</thead>
+
+
+	<thead>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>@item.CountryName</td>
+				<td>@item.Capital</td>
+				<td>@item.Population</td>
+				
+				<td><a href="#" class="button">Update</a></td>
+				<td><a href="#" class="button">Delete</a></td>
+			</tr>
+		}
+
+	</thead>
+
+	
+
+</table>
+
+<a href="/Country/AddCountry"> Add</a>
+
