@@ -1,6 +1,8 @@
 using CountryCity.Context;
 using CountryCity.CustomValidations;
 using CountryCity.Models;
+using CountryCity.Models.MongoDB;
+using CountryCity.Models.MongoDB.Services;
 using CountryCity.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +17,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllersWithViews();
+
+builder.Services.Configure<CountryCityNoSqlDatabaseSettings>(
+    builder.Configuration.GetSection("CountryDatabase"));
+
+builder.Services.AddSingleton<CountriesService>();
+
 // Add services to the container.
 builder.Services.AddRazorPages();
 
