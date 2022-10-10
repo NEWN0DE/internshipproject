@@ -1,5 +1,5 @@
-﻿@using CountryCity.Models.MongoDB;
-@model List<CountryMongoDB>;
+﻿@using CountryCity.Models.MongoDB
+@model List<CountryMongoDB>
 
 
 @{
@@ -29,8 +29,8 @@
 				<td>@item.Capital</td>
 				<td>@item.Population</td>
 				
-				<td><a href="#" class="button">Update</a></td>
-				<td><a href="#" class="button">Delete</a></td>
+				<td><a href="/Country/UpdateCountry/@item.Id" class="button">Update</a></td>
+				<td><a href="/Country/RemoveCountry/@item.Id" class="button">Delete</a></td>
 			</tr>
 		}
 

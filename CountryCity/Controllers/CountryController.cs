@@ -39,5 +39,32 @@ namespace CountryCity.Controllers
 
         }
 
+        
+        public async Task<IActionResult> RemoveCountry(string id)
+        {
+            await countriesService.RemoveAsync(id);
+
+            return RedirectToAction("Get", "Country");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UpdateCountry(string id)
+        {
+            var value =await countriesService.GetAsync(id);
+
+            return View(value);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateCountry(string id, CountryMongoDB cmd)
+        {
+            countriesService.UpdateAsync(id, cmd);
+
+            return RedirectToAction("Get", "Country");
+
+        }
+
+
+
     }
 }

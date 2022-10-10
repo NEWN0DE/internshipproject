@@ -1,0 +1,40 @@
+﻿@model CountryCity.Models.MongoDB.CountryMongoDB
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<h1>Update</h1>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>UpdateCountry</title>
+</head>
+<body>
+    <form method="post" asp-action="UpdateCountry" asp-controller="Country">
+
+        <input type="hidden" asp-for="Id" />
+        <input type="text" asp-for="CountryName" />
+        <input type="text" asp-for="Capital" />
+        <input type="text" asp-for="Population" />
+
+        <button>Update</button>
+
+    </form>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+   
