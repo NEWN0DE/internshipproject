@@ -11,6 +11,7 @@ namespace CountryCity.Mapping
         {
             CreateMap<AppUserViewModel, AppUser>();
 
+
             CreateMap<AppUser,AppUserViewModel>();
 
             CreateMap<RoleViewModel,AppRole>();

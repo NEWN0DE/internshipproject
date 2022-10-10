@@ -17,6 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllersWithViews();
+      
 
 builder.Services.Configure<CountryCityNoSqlDatabaseSettings>(
     builder.Configuration.GetSection("CountryDatabase"));
