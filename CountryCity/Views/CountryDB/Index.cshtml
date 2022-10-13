@@ -1,0 +1,49 @@
+﻿@using CountryCity.Models;
+
+@model List<Country>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table class="table">
+		<thead>
+			<tr>
+
+				<th>
+					Country
+				</th>
+				<th>
+					Capital
+
+				</th>
+				<th>
+					Population
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			@if (Model != null)
+			{
+				@foreach (var item in Model)
+				{
+					<tr>
+
+						<td>
+							@item.Name
+						</td>
+						<td>
+							@item.Capital
+						</td>
+						<td>
+							@item.Population
+						</td>
+					</tr>
+				}
+			}
+		</tbody>
+	</table>
+
+
+

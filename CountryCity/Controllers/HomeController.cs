@@ -190,6 +190,7 @@ namespace CountryCity.Controllers
         [Authorize]
         public IActionResult Index()
         {
+            
             return View(_userManager.Users);
         }  
 
