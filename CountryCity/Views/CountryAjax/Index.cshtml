@@ -1,0 +1,104 @@
+﻿@using CountryCity.Models
+@Model Country
+
+@{
+	Layout = null;
+}
+
+<html>
+<head>
+
+	<!DOCTYPE html>
+
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.serializeJSON/3.2.1/jquery.serializejson.min.js"></script>
+	
+
+	<meta name="viewport" content="width=device-width" />
+
+</head>
+<body>
+	
+
+	<form id="umut">
+
+
+		
+		<label for="lname">* Country Name</label>
+		<input type="text" id="countryName" name="Name" maxlength="25" required="" autocomplete="off" data-original-title="">
+		<br />
+
+		<label for="lname">* Capital</label>
+		<input type="text" id="Capital" name="Capital" />
+		<br />
+
+		<label for="lname">* Population</label>
+		<input type="text" id="Population" name="Population" />
+		<br />
+
+		@*<label for="lname">* Population</label>
+		<input type="text" id="Population" name="mahmut" />
+		<br />*@
+
+	</form>
+
+		<button class="accept-policy" id="formbutton">Ekle</button>
+
+	<button class="accept-policy" onclick="Deneme();">Ekle2</button>
+
+
+</body>
+<script type="text/javascript">
+	$(document).ready(function () {
+
+		//var _country = new Object();
+		//_country.ID = 1,
+
+		$("#formbutton").click(function () {
+			
+			var aaa=convertFormToJSON($("#umut"))
+			//var _country = new Object();
+			//_country.ID = 1,
+
+			//	_country.Name = $("#countryName").val(),
+
+			//	_country.Capital = $("#Capital").val(),
+
+			//	_country.Population = $("#Population").val()
+			$.ajax({
+				type: "POST",
+				url: "@Url.Action("GetDataCountry")",
+				data: aaa,
+				dataType: "json",
+				success: function (msg) {
+
+					console.log(msg);
+					//window.open("/", '_blank');
+
+				},
+				error: function (req, status, error) {
+					//debugger
+					console.log(req);
+				}
+
+
+			});
+		});
+
+
+		function convertFormToJSON(form) {
+			const array = $(form).serializeArray(); // Encodes the set of form elements as an array of names and values.
+			const json = {};
+
+			$.each(array, function () {
+				json[this.name] = this.value || "";
+			});
+
+			return json;
+		}
+	});
+	function Deneme(){
+		alert("Çalıştı")
+	}
+</script>
+</html>
